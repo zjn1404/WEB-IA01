@@ -100,6 +100,7 @@ body {
   padding: 5px 0;
   background-color: #f2dcba;
   position: relative;
+  cursor: ns-resize;
 }
 
 .News-Header::before {
@@ -108,6 +109,7 @@ body {
   left: 10px;
   font-size: 15px;
   line-height: 1;
+  cursor: pointer;
 }
 
 .News-Header::after {
@@ -129,6 +131,7 @@ body {
   left: 10px;
   font-size: 15px;
   line-height: 1;
+  cursor: pointer;
 }
 
 .News-Content {
@@ -307,7 +310,6 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
 }
 
 .box {
@@ -329,9 +331,7 @@ body {
   );
   margin: 5px;
   transition: transform 0.2s;
-}
-.box:hover {
-  transform: scale(1.05);
+  cursor: default;
 }
 
 .content {
@@ -369,9 +369,21 @@ body {
 
 .Menu-Footer {
   color: #e3ac50;
+  padding: 2px;
 }
 
 .MenuList-Footer .Division-Line {
   background-color: #e3ac50;
   height: 13px;
+}
+
+.Menu.Selected {
+  color: #e8d9bc;
+  text-shadow: -1px -1px 0 #cbb8ad, 1px -1px 0 #cbb8ad, -1px 1px 0 #cbb8ad,
+    1px 1px 0 #cbb8ad, 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.Menu-Footer.Selected {
+  color: #f5e3bb;
+  background-color: #e3ac50;
 }
