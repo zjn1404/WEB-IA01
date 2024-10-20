@@ -92,46 +92,34 @@ body {
 
 .News-Header {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   color: #b8a2a9;
-  font-size: 25px;
+  font-size: 20px;
   font-weight: lighter;
   padding: 5px 0;
   background-color: #f2dcba;
-  position: relative;
-  cursor: ns-resize;
+  cursor: default;
 }
 
-.News-Header::before {
-  content: "▶";
-  position: absolute;
-  left: 10px;
-  font-size: 15px;
+.News-Header p {
+  padding: 0 5px;
   line-height: 1;
+}
+
+.Play-Btn {
   cursor: pointer;
+  font-size: 15px;
 }
 
-.News-Header::after {
-  content: "↕";
-  position: absolute;
-  right: 10px;
-  font-size: 20px;
-  line-height: 1;
+.Move-Btn {
+  cursor: ns-resize;
+  font-size: 25px;
 }
 
 .News.Selected .News-Header {
   background-color: #dd9446;
   color: #f9f0be;
-}
-
-.News.Selected .News-Header::before {
-  content: "⬇︎";
-  position: absolute;
-  left: 10px;
-  font-size: 15px;
-  line-height: 1;
-  cursor: pointer;
 }
 
 .News-Content {
@@ -187,11 +175,6 @@ body {
   font-size: 16px;
   color: black;
   padding: 5px;
-}
-
-.Input-Process::placeholder {
-  color: black;
-  opacity: 1;
 }
 
 .Highlight-Btn,

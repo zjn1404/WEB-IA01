@@ -40,8 +40,28 @@ function setupMenuSynchronization() {
   $(".Menu, .Menu-Footer").click(handleMenuClick);
 }
 
+function toggleNewsSelection(event) {
+  if (!event.target.classList.contains("Play-Btn")) {
+    return;
+  }
+
+  if (event.target.textContent === "⬇︎") {
+    event.target.textContent = "▶";
+  } else {
+    event.target.textContent = "⬇︎";
+  }
+
+  let $newsItem = $(event.target).closest(".News");
+  $newsItem.toggleClass("Selected");
+}
+
+function setupNewsToggle() {
+  $(".News-Header").click(toggleNewsSelection);
+}
+
 function setup() {
   setupMenuSynchronization();
+  setupNewsToggle();
 }
 
 $(document).ready(function () {
