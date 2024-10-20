@@ -17,7 +17,7 @@ body {
   align-items: center;
   justify-content: center;
   width: 1280px;
-}
+} 
 
 .Header,
 .Nav {
@@ -219,7 +219,6 @@ body {
 }
 
 .Tool-Dropdown::before {
-  content: "";
   position: absolute;
   top: -10px;
   left: 50px;
@@ -248,10 +247,29 @@ body {
 
 .Tool input[type="checkbox"] {
   margin-right: 5px;
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  background-color: white;
+  border: 1px solid black;
+}
+
+.Tool input[type="checkbox"]:checked {
+  background-color: white;  
+}
+
+.Tool input[type="checkbox"]:checked::after {
+  content: "✓"; 
+  display: block;
+  width: 10px; 
+  height: 10px;
+  position: relative;
+  top: -2px;
+  left: 1px;
 }
 
 .Tool label {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .Color-Highlight-Modify {
@@ -286,17 +304,66 @@ body {
 
 .DragDrop-Select {
   display: flex;
+  align-items: center;
   gap: 10px;
   padding: 5px;
 }
 
-.Animal-Dropdown {
-  flex-grow: 1;
-  border: none;
-  outline: none;
-  appearance: none;
-  background-color: transparent;
+.Select-Container {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  width: 100px;
+  height: 50px;
+  background-color: white;
+  border: 2px solid #475bf7;
+  border-radius: 5px;
+  font-size: 16px;
+  position: relative;
+}
+
+.Selected-Animal {
+  cursor: default;
   font-size: 1.25em;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+}
+
+.Animal-Dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: -2px;
+  z-index: 1;
+  list-style-type: none;
+  width: 100px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  font-size: 1.25em;
+  border-radius: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.Animal-Dropdown.show {
+  display: block;
+}
+
+.Animal-Dropdown li {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.Animal-Dropdown li:hover {
+  background-color: #4b66c3;
+  color: white;
+}
+
+.Select-Control {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .Division-Line {
@@ -307,9 +374,11 @@ body {
 }
 
 .Select-Arrow {
-  font-size: 12px;
+  font-size: 15px;
   padding: 5px;
   cursor: pointer;
+  color: gray;
+  user-select: none;
 }
 
 .Add-Animal-Btn {
@@ -321,17 +390,6 @@ body {
   border-radius: 25px;
   font-size: 22px;
   cursor: pointer;
-}
-
-.Select-Container {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  width: 100px;
-  background-color: white;
-  border: 2px solid #475bf7;
-  border-radius: 5px;
-  font-size: 16px;
 }
 
 .DragDrop-Content {
@@ -348,6 +406,11 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  user-select: none;
+}
+
+.box-container p {
+  user-select: none;
 }
 
 .box {
@@ -374,6 +437,7 @@ body {
 
 .content {
   font-size: 4em;
+  user-select: none;
 }
 
 .Footer {

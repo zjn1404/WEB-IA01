@@ -138,15 +138,6 @@ $(".Tool-Btn").click(function () {
   $(".Tool-Dropdown").css("display", "block");
 });
 
-$(document).click(function (event) {
-  if (
-    !$(event.target).closest(".Tool-Btn").length &&
-    !$(event.target).closest(".Tool-Dropdown").length
-  ) {
-    $(".Tool-Dropdown").css("display", "none");
-  }
-});
-
 function setupHighlightedText() {
   $(".Color-Text-Modify").val("#000000");
   $(".Color-Highlight-Modify").val("#FFFF00");
@@ -157,10 +148,143 @@ function setupHighlightedText() {
   );
 }
 
+// Drag and Drop Section
+
+// Add New
+
+function toDownArrow() {
+  $(".Select-Arrow").text("▼");
+  $(".Select-Arrow").css("color", "gray");
+  $(".Select-Container").css("border", "2px solid #475bf7");
+}
+
+function toUpArrow() {
+  $(".Select-Arrow").text("▲");
+  $(".Select-Arrow").css("color", "green");
+  $(".Select-Container").css("border", "2px solid green");
+}
+
+function toggleAnimalDropdown() {
+  $(".Animal-Dropdown").toggleClass("show");
+  if ($(".Select-Arrow").text() === "▼") {
+    toUpArrow();
+  } else {
+    toDownArrow();
+  }
+}
+
+function updateSelectedAnimal() {
+  const selectedAnimal = $(this).text();
+  const selectedValue = $(this).attr("title");
+  $(".Selected-Animal").text(selectedAnimal).attr("title", selectedValue);
+  $(".Animal-Dropdown").removeClass("show");
+  toDownArrow();
+}
+
+function addNewAnimal() {
+  const selectedAnimal = $(".Selected-Animal").text();
+  const selectedValue = $(".Selected-Animal").attr("title");
+  if (selectedValue) {
+    const newAnimalHtml = `
+      <div class="box-container">
+        <div class="box">
+          <div class="content">${selectedAnimal}</div>
+        </div>
+        <p>${selectedValue}</p>
+      </div>
+    `;
+
+    $(".DragDrop-Content").append(newAnimalHtml);
+
+    initDragDrop($(".DragDrop-Content .box-container:last-child")[0]);
+  }
+}
+
+function setupAnimalDropdown() {
+  $(".Selected-Animal, .Select-Arrow").click(toggleAnimalDropdown);
+
+  $(".Animal-Dropdown li").click(updateSelectedAnimal);
+
+  $(document).click(function (event) {
+    if (!$(event.target).closest(".Select-Container").length) {
+      $(".Animal-Dropdown").removeClass("show");
+      toDownArrow();
+    }
+  });
+
+  $(".Add-Animal-Btn").click(addNewAnimal);
+}
+
+// Drag and Drop
+
+function initDragDrop(obj) {
+  obj.onmousedown = function (e) {
+    this.style.position = "relative";
+    let shadow = this.cloneNode(true);
+    shadow.style.position = "absolute";
+    let parent = this.parentNode;
+    parent.appendChild(shadow);
+    shadow.obj = this;
+    shadow.x0ld = e.clientX;
+    shadow.y0ld = e.clientY;
+    shadow.isDown = true;
+    shadow.style.opacity = 0.4;
+    shadow.style.left = this.offsetLeft + "px";
+    shadow.style.top = this.offsetTop + "px";
+    shadow.style.zIndex = 1000;
+    shadow.startL = parseInt(shadow.style.left);
+    shadow.startT = parseInt(shadow.style.top);
+    if (!this.style.left) {
+      this.style.left = "0px";
+      this.style.top = "0px";
+    }
+
+    shadow.onmousemove = function (e) {
+      if (this.isDown) {
+        let dX = e.clientX - this.x0ld;
+        let dY = e.clientY - this.y0ld;
+        this.style.top = parseInt(this.style.top) + dY + "px";
+        this.style.left = parseInt(this.style.left) + dX + "px";
+        this.x0ld = e.clientX;
+        this.y0ld = e.clientY;
+      }
+    };
+
+    shadow.onmouseup = function (e) {
+      this.isDown = false;
+      let obj = this.obj;
+      let parent = obj.parentNode;
+      let dX = parseInt(this.style.left) - this.startL;
+      let dY = parseInt(this.style.top) - this.startT;
+      obj.style.left = parseInt(obj.style.left) + dX + "px";
+      obj.style.top = parseInt(obj.style.top) + dY + "px";
+      parent.removeChild(this);
+    };
+  };
+}
+
+function setupDragAndDrop() {
+  let boxes = document.querySelectorAll(".box-container");
+  for (let i = 0; i < boxes.length; i++) {
+    initDragDrop(boxes[i]);
+  }
+}
+
+$(document).click(function (event) {
+  if (
+    !$(event.target).closest(".Tool-Btn").length &&
+    !$(event.target).closest(".Tool-Dropdown").length
+  ) {
+    $(".Tool-Dropdown").css("display", "none");
+  }
+});
+
 function setup() {
   setupMenuSynchronization();
   setupNewsToggle();
   setupHighlightedText();
+  setupAnimalDropdown();
+  setupDragAndDrop();
 }
 
 $(document).ready(function () {
