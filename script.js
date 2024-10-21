@@ -42,6 +42,8 @@ function setupMenuSynchronization() {
   $(".Menu, .Menu-Footer").click(handleMenuClick);
 }
 
+// Side section
+
 // News Toggle
 
 function toggleNewsSelection(event) {
@@ -62,6 +64,19 @@ function toggleNewsSelection(event) {
 function setupNewsToggle() {
   $(".News-Header").click(toggleNewsSelection);
 }
+
+// News Drag and Drop
+$(function () {
+  $(".Side").sortable({
+    handle: ".Move-Btn",
+    axis: "y",
+    helper: "clone",
+    opacity: 0.6,
+    start: function (event, ui) {
+      ui.helper.addClass("News-Shadow");
+    },
+  });
+});
 
 // Text Process
 let originalText = $(".Main-Text").text();
@@ -217,58 +232,17 @@ function setupAnimalDropdown() {
 
 // Drag and Drop
 
-function initDragDrop(obj) {
-  obj.onmousedown = function (e) {
-    this.style.position = "relative";
-    let shadow = this.cloneNode(true);
-    shadow.style.position = "absolute";
-    let parent = this.parentNode;
-    parent.appendChild(shadow);
-    shadow.obj = this;
-    shadow.x0ld = e.clientX;
-    shadow.y0ld = e.clientY;
-    shadow.isDown = true;
-    shadow.style.opacity = 0.4;
-    shadow.style.left = this.offsetLeft + "px";
-    shadow.style.top = this.offsetTop + "px";
-    shadow.style.zIndex = 1000;
-    shadow.startL = parseInt(shadow.style.left);
-    shadow.startT = parseInt(shadow.style.top);
-    if (!this.style.left) {
-      this.style.left = "0px";
-      this.style.top = "0px";
-    }
-
-    shadow.onmousemove = function (e) {
-      if (this.isDown) {
-        let dX = e.clientX - this.x0ld;
-        let dY = e.clientY - this.y0ld;
-        this.style.top = parseInt(this.style.top) + dY + "px";
-        this.style.left = parseInt(this.style.left) + dX + "px";
-        this.x0ld = e.clientX;
-        this.y0ld = e.clientY;
-      }
-    };
-
-    shadow.onmouseup = function (e) {
-      this.isDown = false;
-      let obj = this.obj;
-      let parent = obj.parentNode;
-      let dX = parseInt(this.style.left) - this.startL;
-      let dY = parseInt(this.style.top) - this.startT;
-      obj.style.left = parseInt(obj.style.left) + dX + "px";
-      obj.style.top = parseInt(obj.style.top) + dY + "px";
-      parent.removeChild(this);
-    };
-  };
-}
-
-function setupDragAndDrop() {
-  let boxes = document.querySelectorAll(".box-container");
-  for (let i = 0; i < boxes.length; i++) {
-    initDragDrop(boxes[i]);
-  }
-}
+$(function () {
+  $(".DragDrop-Content").sortable({
+    placeholder: "Animal-Placeholder",
+    cursor: "default",
+    tolerance: "pointer",
+    start: function (e, ui) {
+      ui.placeholder.height(ui.item.outerHeight());
+      ui.placeholder.width(ui.item.outerWidth());
+    },
+  });
+});
 
 $(document).click(function (event) {
   if (
@@ -284,7 +258,6 @@ function setup() {
   setupNewsToggle();
   setupHighlightedText();
   setupAnimalDropdown();
-  setupDragAndDrop();
 }
 
 $(document).ready(function () {
